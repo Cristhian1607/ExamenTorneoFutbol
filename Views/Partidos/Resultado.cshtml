@@ -1,0 +1,35 @@
+﻿<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0">Registrar Resultado</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Resultado" method="post">
+                        <input type="hidden" name="partidoId" value="@ViewBag.PartidoId" />
+
+                        <div class="row mb-3 text-center">
+                            <div class="col-6">
+                                <label class="form-label fw-bold">Goles Local</label>
+                                <input type="number" name="golesLocal" class="form-control text-center form-control-lg" required min="0" value="0" />
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fw-bold">Goles Visitante</label>
+                                <input type="number" name="golesVisitante" class="form-control text-center form-control-lg" required min="0" value="0" />
+                            </div>
+                        </div>
+
+                        <div class="alert alert-warning text-center" style="font-size: 0.9em;">
+                            <strong>Aviso:</strong> Una vez guardado el resultado, el partido se marcara como finalizado y no podra modificarse ni eliminarse.
+                        </div>
+
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-info text-white fw-bold">Guardar Resultado Final</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

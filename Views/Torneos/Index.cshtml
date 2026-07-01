@@ -1,0 +1,52 @@
+﻿@model IEnumerable<TorneosFutbolMVC.Models.Torneo>
+
+<div class="container mt-4">
+    <h2 class="mb-4">Gestión de Torneos</h2>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>¡Atención!</strong> @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    @if (TempData["Exito"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Exito"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <a asp-action="Crear" class="btn btn-primary mb-3">Nuevo Torneo</a>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover shadow-sm">
+            <thead class="table-dark">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Edición</th>
+                    <th>Creado En</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Nombre</td>
+                        <td>@item.Edicion</td>
+                        <td>@item.CreadoEn.ToShortDateString()</td>
+                        <td>
+                            <a asp-action="Detalles" asp-route-id="@item.Id" class="btn btn-sm btn-info text-white">Gestionar</a>
+
+                            <form asp-action="Desactivar" asp-route-id="@item.Id" method="post" class="d-inline" onsubmit="return confirm('¿Seguro que desea desactivar este torneo?');">
+                                <button type="submit" class="btn btn-sm btn-danger">Desactivar</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

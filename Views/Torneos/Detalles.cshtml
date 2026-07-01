@@ -1,0 +1,128 @@
+﻿@model TorneosFutbolMVC.ViewModels.TorneoDetalleViewModel
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2>@Model.Torneo.Nombre <span class="badge bg-secondary">@Model.Torneo.Edicion</span></h2>
+            <p class="text-muted">Estado: @(Model.Torneo.Activo ? "Activo" : "Inactivo")</p>
+        </div>
+        <a asp-action="Index" class="btn btn-outline-secondary">Volver al Listado</a>
+    </div>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>¡Error!</strong> @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    @if (TempData["Exito"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Exito"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Equipos Inscritos</h5>
+                    <a href="@Url.Action("Crear", "Equipos", new { torneoId = Model.Torneo.Id })" class="btn btn-sm btn-success">+ Agregar</a>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Equipo</th>
+                                    <th>Ciudad</th>
+                                    <th class="text-end">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (!Model.Equipos.Any())
+                                {
+                                    <tr><td colspan="3" class="text-center text-muted">No hay equipos inscritos.</td></tr>
+                                }
+                                @foreach (var equipo in Model.Equipos)
+                                {
+                                    <tr>
+                                        <td><strong>@equipo.Nombre</strong></td>
+                                        <td>@equipo.Ciudad</td>
+                                        <td class="text-end">
+                                            <a href="@Url.Action("Editar", "Equipos", new { id = equipo.Id })" class="btn btn-sm btn-warning">Editar</a>
+                                            <form action="@Url.Action("Eliminar", "Equipos", new { id = equipo.Id, torneoId = Model.Torneo.Id })" method="post" class="d-inline" onsubmit="return confirm('¿Eliminar equipo?');">
+                                                <button type="submit" class="btn btn-sm btn-danger">X</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Partidos Programados</h5>
+                    <a href="@Url.Action("Crear", "Partidos", new { torneoId = Model.Torneo.Id })" class="btn btn-sm btn-light text-primary">+ Programar</a>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th class="text-center">Encuentro</th>
+                                    <th class="text-end">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (!Model.Partidos.Any())
+                                {
+                                    <tr><td colspan="3" class="text-center text-muted">No hay partidos programados.</td></tr>
+                                }
+                                @foreach (var partido in Model.Partidos)
+                                {
+                                    var local = Model.Equipos.FirstOrDefault(e => e.Id == partido.EquipoLocalId)?.Nombre ?? "Desconocido";
+                                    var visitante = Model.Equipos.FirstOrDefault(e => e.Id == partido.EquipoVisitanteId)?.Nombre ?? "Desconocido";
+
+                                    <tr>
+                                        <td>@partido.FechaPartido.ToString("dd/MM/yyyy HH:mm")</td>
+                                        <td class="text-center">
+                                            @if (partido.Jugado)
+                                            {
+                                                <strong>@local (@partido.GolesLocal) - (@partido.GolesVisitante) @visitante</strong>
+                                                <br>
+
+                                                <span class="badge bg-success" style="font-size: 0.7em;">Finalizado</span>
+                                            }
+                                            else
+                                            {
+                                                <span>@local vs @visitante</span>
+                                            }
+                                        </td>
+                                        <td class="text-end">
+                                            @if (!partido.Jugado)
+                                            {
+                                                <a href="@Url.Action("Resultado", "Partidos", new { id = partido.Id })" class="btn btn-sm btn-info text-white">Resultado</a>
+                                                <form action="@Url.Action("Eliminar", "Partidos", new { id = partido.Id, torneoId = Model.Torneo.Id })" method="post" class="d-inline" onsubmit="return confirm('¿Cancelar partido?');">
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger">X</button>
+                                                </form>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
