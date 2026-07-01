@@ -1,8 +1,41 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Inicio";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="hero-torneos">
+    <h1>Sistema de Gestión de Torneos de Fútbol</h1>
+    <p>
+        Administra torneos, inscribe equipos y registra los resultados de cada partido,
+        todo respaldado por Supabase (PostgreSQL) en tiempo real.
+    </p>
+    <a asp-controller="Torneos" asp-action="Index" class="btn btn-warning btn-lg">
+        Ver torneos
+    </a>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-4">
+        <div class="card h-100 text-center">
+            <div class="card-body">
+                <h5 class="card-title mb-2">🏆 Torneos</h5>
+                <p class="card-text text-muted mb-0">Crea torneos, define su edición y desactívalos cuando finalicen.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 text-center">
+            <div class="card-body">
+                <h5 class="card-title mb-2">👕 Equipos</h5>
+                <p class="card-text text-muted mb-0">Inscribe equipos por torneo, edita sus datos o elimínalos si aún no jugaron.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 text-center">
+            <div class="card-body">
+                <h5 class="card-title mb-2">⚽ Partidos</h5>
+                <p class="card-text text-muted mb-0">Programa encuentros y registra el marcador final de cada partido.</p>
+            </div>
+        </div>
+    </div>
 </div>
